@@ -2,6 +2,7 @@ from aiogram.utils import executor
 from bot import dp
 from handlers import client, admin, other
 
+
 async def on_startup(_):
     print("Бот успешно запущен!")
     
