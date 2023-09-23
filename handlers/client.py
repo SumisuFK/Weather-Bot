@@ -1,6 +1,6 @@
 from aiogram import types, Dispatcher
 from keyboards.client_kb import kb_client
-from apiley import API_TOKEN
+from apikey import API_TOKEN
 import requests
 
 
@@ -18,7 +18,7 @@ async def handle_location(message: types.Message):
         params = {"lat" : lat, "lon" : lon, "appid" : API_TOKEN, "units": "metric"}
         response = requests.get("https://api.openweathermap.org/data/3.0/onecall", params=params)
         weather = response.json()
-        temperature = weather["current"]["temp"]
+        temperature = weather["main"][0]["temp"]
         await message.answer(f'По вашему местоположению погода составляет: {temperature}°C')
     except Exception as e:
         print(f'Произошла ошибка: {str(e)}')
@@ -27,4 +27,4 @@ async def handle_location(message: types.Message):
 
 def register_handlers_client(dp: Dispatcher):
     dp.register_message_handler(command_start, commands=['start', 'help'])
-    dp.message_handler(content_types=['location'])
+    dp.register_message_handler(handle_location, content_types=['location'])
